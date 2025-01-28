@@ -24,9 +24,11 @@ function github_api_get {
 function list_users_with_read_access {
     local endpoint="repos/${REPO_OWNER}/${REPO_NAME}/collaborators"
 
+    # Fetch the list of collaborators on the repository
+    response=$(github_api_get "$endpoint")
      # Debug: Print the raw API response
     echo "Raw API response:"
-    echo "$response"
+    echo "$response " | jq .
     # Parse the response to get collaborators with read access
     collaborators=$(echo "$response" | jq -r '.[] | select(.permissions.pull == true) | .login')
 
